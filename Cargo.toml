@@ -6,7 +6,9 @@ authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 [dependencies]
 kdtree = "~0.2.1"
 csv = "0.14.3"
-rustc-serialize = "0.3"
+rustc-serialize = "0.3.18"
 time = "*"
 hyper = "0.7"
-iron = "*"
+iron = "0.2.6"
+router = "0.1.0"
+params = "0.0.3"

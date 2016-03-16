@@ -5,16 +5,18 @@ extern crate kdtree;
 extern crate csv;
 extern crate rustc_serialize;
 extern crate time;
+extern crate params;
 
 use kdtree::KdTree;
 use time::PreciseTime;
 
 extern crate iron;
+extern crate router;
 
 use iron::prelude::*;
 use iron::status;
 use rustc_serialize::json;
-
+use router::Router;
 
 #[derive(Clone, RustcDecodable, RustcEncodable)]
 struct Record {
@@ -89,7 +91,7 @@ impl<'a> ReverseGeocoder<'a> {
 }
 
 fn print_record(r: &Record) {
-    println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
+    println!("({}, {}): {} / {} / {} / {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
 }
 
 fn main() {
@@ -99,8 +101,15 @@ fn main() {
     let test = geocoder.search(&[44.962786, -93.344722]).unwrap();
 
     print_record(&test);
+    let mut router = Router::new();
+
+    router.get("/reverse", hello_world);
 
     fn hello_world(_: &mut Request) -> IronResult<Response> {
+        use params::{Map, Params};
+
+        let map: Map = try!(req.get_ref::<Params>());
+
         let loc = Locations::from_file();
         let geocoder = ReverseGeocoder::new(&loc);
         let y = geocoder.search(&[44.962786, -93.344722]).unwrap();
@@ -108,7 +117,7 @@ fn main() {
         Ok(Response::with((status::Ok, payload)))
     }
 
-    Iron::new(hello_world).http("localhost:3000").unwrap();
+    Iron::new(router).http("localhost:3000").unwrap();
     println!("On 3000");
 }
 
