@@ -1,4 +1,6 @@
 #![feature(test)]
+#![feature(phase)]
+#![feature(box_syntax)]
 extern crate kdtree;
 extern crate csv;
 extern crate rustc_serialize;
@@ -7,7 +9,14 @@ extern crate time;
 use kdtree::KdTree;
 use time::PreciseTime;
 
-#[derive(Clone, RustcDecodable)]
+extern crate iron;
+
+use iron::prelude::*;
+use iron::status;
+use rustc_serialize::json;
+
+
+#[derive(Clone, RustcDecodable, RustcEncodable)]
 struct Record {
     lat: f64,
     lon: f64,
@@ -87,9 +96,20 @@ fn main() {
     let loc = Locations::from_file();
     let geocoder = ReverseGeocoder::new(&loc);
 
-    let y = geocoder.search(&[44.962786, -93.344722]).unwrap();
+    let test = geocoder.search(&[44.962786, -93.344722]).unwrap();
 
-    print_record(&y);
+    print_record(&test);
+
+    fn hello_world(_: &mut Request) -> IronResult<Response> {
+        let loc = Locations::from_file();
+        let geocoder = ReverseGeocoder::new(&loc);
+        let y = geocoder.search(&[44.962786, -93.344722]).unwrap();
+        let payload = json::encode(&y).unwrap();
+        Ok(Response::with((status::Ok, payload)))
+    }
+
+    Iron::new(hello_world).http("localhost:3000").unwrap();
+    println!("On 3000");
 }
 
 extern crate test;
