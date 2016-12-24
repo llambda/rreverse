@@ -1,7 +1,8 @@
 #![cfg_attr(feature="clippy", plugin(clippy))]
-// #![feature(custom_derive, plugin, custom_attribute, type_macros)]
+#![feature(plugin, proc_macro, custom_derive)]
+#![plugin(rocket_codegen)]
+
 extern crate kdtree;
-extern crate rustc_serialize;
 extern crate time;
 mod geocoder;
 use geocoder::Locations;

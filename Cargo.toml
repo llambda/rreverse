@@ -6,11 +6,14 @@ authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 [dependencies]
 kdtree = "~0.3.1"
 quick-csv = "~0.1.6"
-rustc-serialize = "~0.3.19"
 time = "~0.1.35"
-iron = "~0.4.0"
-queryst = "~1.0.1"
 lazy_static = "~0.2.1"
+rocket = "~0.1.1"
+rocket_codegen = "~0.1.1"
+serde = "~0.8"
+serde_json = "~0.8"
+serde_derive = "~0.8"
+rustc-serialize = "~0.3.22"
 
 [[bin]]
 name = "web"

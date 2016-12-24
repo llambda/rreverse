@@ -1,9 +1,14 @@
+
 use kdtree::KdTree;
 use kdtree::distance::squared_euclidean;
 use time::PreciseTime;
 extern crate quick_csv;
 
-#[derive(Clone, RustcDecodable, RustcEncodable)]
+extern crate rocket;
+extern crate serde_json;
+extern crate rustc_serialize;
+
+#[derive(Debug, Clone, Serialize, Deserialize, RustcDecodable, RustcEncodable)]
 pub struct Record {
     lat: f64,
     lon: f64,
