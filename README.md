@@ -1,15 +1,22 @@
-[![Build Status](https://travis-ci.org/llambda/rrgeo.svg?branch=master)](https://travis-ci.org/llambda/rrgeo)
-
-# [Rust Reverse Geocoder](https://crates.io/crates/reverse_geocoder)
+# Rust Reverse Geocoder
 A fast reverse geocoder in Rust. Inspired by Python [reverse-geocoder](https://github.com/thampiman/reverse-geocoder).
 
+## Links
+
+- [Crate](https://crates.io/crates/reverse_geocoder)
+- [2.0.0 Docs](https://docs.rs/reverse_geocoder/2.0.0-alpha.0/reverse_geocoder/index.html)
+- [1.0.1 Docs](https://docs.rs/crate/reverse_geocoder/1.0.1)
+- Build status: [![Build Status](https://travis-ci.org/llambda/rrgeo.svg?branch=master)](https://travis-ci.org/llambda/rrgeo)
+
+## Description 
+ 
 `rrgeo` takes a latitude and longitude as input and returns the closest city, country, latitude, and longitude, using a k-d tree to efficiently find the nearest neighbour based on a known list of locations. This can be useful if you need to reverse geocode a large number of coordinates quickly, or just need the rough location of coordinates but don't want the expense or complication of an online reverse geocoder.
 
 This crate is implemented as a [library](https://crates.io/crates/reverse_geocoder), an [Actix](https://actix.rs/) REST API, an [Iron](https://github.com/iron/iron) REST API, and as a command-line utility, thanks to [Cargo workspaces](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
 
-# Usage
+## Usage
 
-## Command line search
+### Command line search
 
 Example usage:
 
@@ -20,7 +27,7 @@ Example usage:
 (40.72788, -73.09761): West Sayville New York Suffolk County US
 ```
 
-## Actix Web Server
+### Actix Web Server
 
 Example usage:
 
@@ -29,10 +36,6 @@ cargo run -p rrgeo-actix --release
 ```
 
 Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
-
-## Library
-
-- https://docs.rs/reverse_geocoder/
 
 ## Benchmarks 
 
@@ -94,7 +97,7 @@ Transfer/sec:    841.78KB
 ```
 
 
-# Performance
+## Performance
 
 Below we have comparisons between the Rust, Python and Node.js versions.
 
@@ -106,7 +109,7 @@ Below we have comparisons between the Rust, Python and Node.js versions.
 
 Most of the performance differences appear to be in time taken to load the CSV file and create the k-d tree, but not searching the tree. Searching time resembles algorithmic complexity of [k-d tree](https://en.wikipedia.org/wiki/K-d_tree). Python version is partly implemented in C++ meaning it is not a purely Python implementation. (It might be interesting to see how a pure Python version performs.) The Node.js version is pure JavaScript, as in, not using C add-ons.
 
-## Rust --release build
+### Rust --release build
 
 ```
      Running `target/release/web`
@@ -118,7 +121,7 @@ PT0.002887542S seconds to search
 
 ```
 
-## Rust --debug build
+### Rust --debug build
 
 ```
      Running `target/debug/web`
@@ -130,7 +133,7 @@ PT0.078178297S seconds to search
 
 ```
 
-## Python mode 1 (single threaded K-D tree)
+### Python mode 1 (single threaded K-D tree)
 
 ```
 ➜  reverse-geocoder git:(master) ✗ time python mode1.py
@@ -140,7 +143,7 @@ Loading formatted geocoded file...
 python mode1.py  1.60s user 0.22s system 98% cpu 1.847 total
 ```
 
-## Python mode 2 (multi threaded K-D tree)
+### Python mode 2 (multi threaded K-D tree)
 
 ```
 ➜  reverse-geocoder git:(master) ✗ time python mode2.py
@@ -150,7 +153,7 @@ Loading formatted geocoded file...
 python mode2.py  2.82s user 0.34s system 142% cpu 2.221 total
 ```
 
-## [nreverse](https://github.com/llambda/nreverse) (Node.js version)
+### [nreverse](https://github.com/llambda/nreverse) (Node.js version)
 
 ```
 load modules: 12.619ms
