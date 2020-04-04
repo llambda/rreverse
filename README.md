@@ -4,8 +4,8 @@ A fast reverse geocoder in Rust. Inspired by Python [reverse-geocoder](https://g
 ## Links
 
 - [Crate](https://crates.io/crates/reverse_geocoder)
-- [2.0.0 Docs](https://docs.rs/reverse_geocoder/2.0.0-alpha.0/reverse_geocoder/index.html)
-- [1.0.1 Docs](https://docs.rs/crate/reverse_geocoder/1.0.1)
+- [2.0.0-alpha.0 Docs](https://docs.rs/reverse_geocoder/2.0.0-alpha.0/reverse_geocoder/index.html)
+- [1.0.1 Docs](https://docs.rs/reverse_geocoder/1.0.1/reverse_geocoder/)
 - Build status: [![Build Status](https://travis-ci.org/llambda/rrgeo.svg?branch=master)](https://travis-ci.org/llambda/rrgeo)
 
 ## Description 
