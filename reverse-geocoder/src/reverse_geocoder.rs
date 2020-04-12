@@ -2,15 +2,6 @@
 //! A library for fast, offline reverse geocoding. The location data are from [GeoNames](http://www.geonames.org/).
 //!
 //! # Usage
-//! First, add this to your Cargo.toml
-//!
-//! ```toml
-//! [dependencies]
-//! reverse_geocoder = "^1.0.1"
-//! ```
-//!
-//! Next:
-//!
 //! ```
 //! use reverse_geocoder::{Locations, ReverseGeocoder};
 //!
@@ -24,14 +15,12 @@
 //! }
 //!```
 
-#[macro_use]
-extern crate serde_derive;
-
 use kdtree::{distance::squared_euclidean, KdTree};
 // use time::Instant;
-use std::fmt;
-use std::path::PathBuf;
+use serde_derive::{Serialize, Deserialize};
 use std::error;
+use std::fmt;
+use std::path::Path;
 
 /// A parsed location.
 #[derive(Debug, Clone, RustcDecodable, RustcEncodable, Serialize, Deserialize)]
@@ -78,21 +67,18 @@ impl Locations {
     }
 
     /// Supply your own path to a CSV file.
-    pub fn from_path(path: PathBuf) -> Result<Locations, Box<dyn error::Error>> {
-        // let start = Instant::now();
+    pub fn from_path<P: AsRef<Path>>(file_path: P) -> Result<Locations, Box<dyn error::Error>> {
+        // let start_load = Instant::now();
         let mut records = Vec::new();
 
-        let reader = quick_csv::Csv::from_file(path)?.has_header(true);
+        let reader = quick_csv::Csv::from_file(file_path)?.has_header(true);
 
         for read_record in reader {
             let record: Record = read_record?.decode()?;
             records.push(([record.lat, record.lon], record));
         }
 
-        // let end = Instant::now();
-
-        // println!("{} ms to load cities.csv", (end - start).whole_milliseconds());
-
+        // eprintln!("{} ms to load csv", start_load.elapsed().whole_milliseconds());
         Ok(Locations { records: records })
     }
 }
@@ -126,18 +112,20 @@ impl<'a> ReverseGeocoder<'a> {
         let nearest = match self.tree.nearest(&[loc.0, loc.1], 1, &squared_euclidean) {
             Ok(nearest) => nearest,
             Err(error) => match error {
-                kdtree::ErrorKind::WrongDimension => panic!("Internal error, kdtree::ErrorKind::WrongDimension should never occur"),
+                kdtree::ErrorKind::WrongDimension => {
+                    panic!("Internal error, kdtree::ErrorKind::WrongDimension should never occur")
+                }
                 kdtree::ErrorKind::NonFiniteCoordinate => return None,
-                kdtree::ErrorKind::ZeroCapacity => panic!("Internal error, kdtree::ErrorKind::ZeroCapacity should never occur"),
+                kdtree::ErrorKind::ZeroCapacity => {
+                    panic!("Internal error, kdtree::ErrorKind::ZeroCapacity should never occur")
+                }
             },
         };
         match nearest.get(0) {
-            Some(nearest) => {
-                Some(SearchResult {
-                    distance: nearest.0,
-                    record: nearest.1,
-                })
-            },
+            Some(nearest) => Some(SearchResult {
+                distance: nearest.0,
+                record: nearest.1,
+            }),
             None => None,
         }
     }
@@ -176,7 +164,7 @@ mod tests {
 
     #[test]
     fn it_loads_locations_from_a_path() -> Result<(), Box<dyn error::Error>> {
-        let loc = Locations::from_path("./cities.csv".into())?;
+        let loc = Locations::from_path("./cities.csv")?;
         let geocoder = ReverseGeocoder::new(&loc);
         let search_result = geocoder.search((45.0, 54.0));
         assert!(search_result.is_some());
@@ -185,7 +173,7 @@ mod tests {
 
     #[test]
     fn it_loads_locations_from_a_nearly_blank_file() -> Result<(), Box<dyn error::Error>> {
-        let loc = Locations::from_path("./nearly-blank.csv".into())?;
+        let loc = Locations::from_path("./nearly-blank.csv")?;
         let geocoder = ReverseGeocoder::new(&loc);
         let search_result = geocoder.search((45.0, 54.0));
         assert!(search_result.is_none());
@@ -194,7 +182,7 @@ mod tests {
 
     #[test]
     fn it_loads_locations_from_a_blank_file() -> Result<(), Box<dyn error::Error>> {
-        let loc = Locations::from_path("./blank.csv".into())?;
+        let loc = Locations::from_path("./blank.csv")?;
         let geocoder = ReverseGeocoder::new(&loc);
         let search_result = geocoder.search((45.0, 54.0));
         assert!(search_result.is_none());
