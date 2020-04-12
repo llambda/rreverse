@@ -1,21 +1,6 @@
-extern crate time;
-extern crate reverse_geocoder;
-
-use reverse_geocoder::{
-    Locations,
-    ReverseGeocoder,
-};
-
-use std::{
-    env,
-    process::{
-        exit,
-    },
-};
-
-use time::{
-    PreciseTime,
-};
+use reverse_geocoder::{Locations, ReverseGeocoder};
+use std::{env, process::exit};
+use time::Instant;
 
 fn main() {
     let args: Vec<_> = env::args().collect();
@@ -31,10 +16,9 @@ fn main() {
     let loc = Locations::from_memory();
     let geocoder = ReverseGeocoder::new(&loc);
 
-    let start = PreciseTime::now();
+    let start = Instant::now();
     let search_result = geocoder.search((lat, long)).expect("Nothing found.");
-    let end = PreciseTime::now();
-    eprintln!("{} ms to search", start.to(end).num_milliseconds());
+    eprintln!("{} ms to search", start.elapsed().whole_milliseconds());
 
     println!("Location: {}", search_result.record);
     println!("Distance: {}", search_result.distance);

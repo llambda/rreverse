@@ -2,10 +2,11 @@
 name = "rrgeo-cmd"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
+edition = "2018"
 
 [dependencies]
 reverse_geocoder = { path = "../reverse-geocoder" }
-time = "^0.1"
+time = "^0.2.9"
 
 [[bin]]
 name = "rrgeo-cmd"

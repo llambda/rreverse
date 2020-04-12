@@ -1,14 +1,7 @@
-#[macro_use]
-extern crate lazy_static;
-#[macro_use]
-extern crate serde_derive;
-use actix_web::{http, middleware, web, App, HttpServer, HttpResponse, Result};
-
-use reverse_geocoder::{
-    Locations,
-    Record,
-    ReverseGeocoder,
-};
+use actix_web::{http, middleware, web, App, HttpResponse, HttpServer, Result};
+use lazy_static::lazy_static;
+use reverse_geocoder::{Locations, Record, ReverseGeocoder};
+use serde_derive::Deserialize;
 use std::fmt;
 
 #[derive(Debug)]
@@ -78,12 +71,11 @@ mod tests {
 
     #[actix_rt::test]
     async fn it_serves_results_on_actix() -> Result<(), ReverseGeocodeWebError> {
-        let mut app = test::init_service(
-            App::new().route("/", web::get().to(index))
-        )
-        .await;
+        let mut app = test::init_service(App::new().route("/", web::get().to(index))).await;
 
-        let req = test::TestRequest::get().uri("/?lat=44.962786&long=-93.344722").to_request();
+        let req = test::TestRequest::get()
+            .uri("/?lat=44.962786&long=-93.344722")
+            .to_request();
 
         let resp = app.call(req).await.unwrap();
 
@@ -94,7 +86,10 @@ mod tests {
             _ => panic!("Response error"),
         };
 
-        assert_eq!(response_body, r##"{"lat":44.9483,"lon":-93.34801,"name":"Saint Louis Park","admin1":"Minnesota","admin2":"Hennepin County","admin3":"US"}"##);
+        assert_eq!(
+            response_body,
+            r##"{"lat":44.9483,"lon":-93.34801,"name":"Saint Louis Park","admin1":"Minnesota","admin2":"Hennepin County","admin3":"US"}"##
+        );
 
         Ok(())
     }
