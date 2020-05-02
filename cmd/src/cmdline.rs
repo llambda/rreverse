@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let geocoder = ReverseGeocoder::new(&loc);
 
     let start = Instant::now();
-    let search_result = geocoder.search((lat, long)).expect("Nothing found.");
+    let search_result: SearchResult = geocoder.search((lat, long)).expect("Nothing found.");
     eprintln!("{} ms to search", start.elapsed().whole_milliseconds());
 
     println!("Location: {}", search_result.record);
