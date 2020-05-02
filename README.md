@@ -37,6 +37,16 @@ cargo run -p rrgeo-actix --release
 
 Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 
+### Warp Web Server
+
+Example usage:
+
+```
+cargo run -p rrgeo-warp --release
+```
+
+Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
+
 ## Benchmarks 
 
 The core library ([measured with criterion](https://github.com/japaric/criterion.rs)):

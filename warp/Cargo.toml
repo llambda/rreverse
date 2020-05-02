@@ -1,23 +1,24 @@
 [package]
-name = "rrgeo-actix"
+name = "rrgeo-warp"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-actix-rt = "1.1.1"
-actix-web = "2.0.0"
-reverse_geocoder = { path = "../reverse-geocoder" }
+env_logger = "*"
+failure = "^0.1"
 lazy_static = "^1.4"
-time = "0.2.13"
 queryst = "^2.0"
+reverse_geocoder = { path = "../reverse-geocoder" }
 serde = "^1.0"
 serde_derive = "^1.0"
-env_logger = "*"
+time = "0.2.13"
+tokio = { version = "0.2", features = ["macros"] }
+warp = "0.2.2"
 
 [dev-dependencies]
 bytes = "0.5.4"
 
 [[bin]]
-name = "rrgeo-actix"
-path = "src/actix.rs"
+name = "rrgeo-warp"
+path = "src/warp.rs"

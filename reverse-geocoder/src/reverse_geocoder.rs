@@ -40,6 +40,7 @@ pub struct Record {
 }
 
 /// Search result from querying a lat/long.
+#[derive(Debug, Serialize, Clone)]
 pub struct SearchResult<'a> {
     /// Distance away from given lat/long.
     pub distance: f64,
