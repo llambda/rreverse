@@ -3,13 +3,13 @@
 //!
 //! # Usage
 //! ```
-//! use reverse_geocoder::{Locations, ReverseGeocoder};
+//! use reverse_geocoder::{Locations, ReverseGeocoder, SearchResult};
 //!
 //! fn main() {
 //!     let loc = Locations::from_memory();
 //!     let geocoder = ReverseGeocoder::new(&loc);
-//!     let coords = (45.0, 54.0);
-//!     let search_result = geocoder.search(coords).expect("Search error.");
+//!     let coords = (40.7831, -73.9712);
+//!     let search_result = geocoder.search(coords).unwrap();
 //!     println!("Distance {}", search_result.distance);
 //!     println!("Record {}", search_result.record);
 //! }
@@ -146,9 +146,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_finds_3_places() {
+    fn it_finds_4_places() {
         let loc = Locations::from_memory();
         let geocoder = ReverseGeocoder::new(&loc);
+
+        let slp = geocoder.search((40.7831, -73.9712)).unwrap();
+        assert_eq!(slp.record.name, "Manhattan");
+
         let slp = geocoder.search((44.962786, -93.344722)).unwrap();
 
         assert_eq!(slp.record.name, "Saint Louis Park");

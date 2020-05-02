@@ -7,7 +7,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<_> = env::args().collect();
 
     if args.len() < 3 {
-        eprint!("Usage: rreverse lat long\n e.g., rreverse 44.962786 -93.344722\n\n");
+        eprint!("Usage: rreverse lat long\n e.g., rreverse 40.7831 -73.9712\n\n");
         exit(1);
     }
 
