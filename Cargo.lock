@@ -1329,7 +1329,7 @@ dependencies = [
 
 [[package]]
 name = "reverse_geocoder"
-version = "2.0.0-alpha.0"
+version = "2.0.0"
 dependencies = [
  "criterion 0.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "kdtree 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1351,7 +1351,7 @@ dependencies = [
  "failure 0.1.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "queryst 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "reverse_geocoder 2.0.0-alpha.0",
+ "reverse_geocoder 2.0.0",
  "serde 1.0.106 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.106 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1361,7 +1361,7 @@ dependencies = [
 name = "rrgeo-cmd"
 version = "0.1.0"
 dependencies = [
- "reverse_geocoder 2.0.0-alpha.0",
+ "reverse_geocoder 2.0.0",
  "time 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

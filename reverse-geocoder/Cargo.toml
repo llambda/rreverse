@@ -1,6 +1,6 @@
 [package]
 name = "reverse_geocoder"
-version = "2.0.0-alpha.0"
+version = "2.0.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 edition = "2018"
 description = "Offline reverse geocoder library."
