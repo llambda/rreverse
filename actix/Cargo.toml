@@ -9,7 +9,7 @@ actix-rt = "1.1.1"
 actix-web = "2.0.0"
 reverse_geocoder = { path = "../reverse-geocoder" }
 lazy_static = "^1.4"
-time = "0.2.13"
+time = "0.2.14"
 queryst = "^2.0"
 serde = "^1.0"
 serde_derive = "^1.0"

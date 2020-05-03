@@ -5,14 +5,11 @@ authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-env_logger = "*"
-failure = "^0.1"
 lazy_static = "^1.4"
-queryst = "^2.0"
 reverse_geocoder = { path = "../reverse-geocoder" }
 serde = "^1.0"
 serde_derive = "^1.0"
-time = "0.2.13"
+time = "0.2.14"
 tokio = { version = "0.2", features = ["macros"] }
 warp = "0.2.2"
 
