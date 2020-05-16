@@ -12,7 +12,7 @@ A fast reverse geocoder in Rust. Inspired by Python [reverse-geocoder](https://g
  
 `rrgeo` takes a latitude and longitude as input and returns the closest city, country, latitude, and longitude, using a k-d tree to efficiently find the nearest neighbour based on a known list of locations. This can be useful if you need to reverse geocode a large number of coordinates quickly, or just need the rough location of coordinates but don't want the expense or complication of an online reverse geocoder.
 
-This crate is implemented as a [library](https://crates.io/crates/reverse_geocoder), an [Actix](https://actix.rs/) REST API, an [Iron](https://github.com/iron/iron) REST API, and as a command-line utility, thanks to [Cargo workspaces](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
+This crate is implemented as a [library](https://crates.io/crates/reverse_geocoder), an [Actix](https://actix.rs/) REST API, a [Warp](https://seanmonstar.com/post/176530511587/warp) REST API, and as a command-line utility, thanks to [Cargo workspaces](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
 
 ## Usage
 
@@ -49,61 +49,115 @@ Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 
 ## Benchmarks 
 
+Benchmarked on Intel Core i7 4790K at 4.00GHz.
+
 The core library ([measured with criterion](https://github.com/japaric/criterion.rs)):
 
 ```
 > cargo bench
-Benchmarking search: Warming up for 3.0000 s5 ms to build the KdTree
-search                  time:   [1.1530 ms 1.1639 ms 1.1748 ms]                    
-                        change: [-2.6577% -1.4078% -0.0250%] (p = 0.04 < 0.05)
-                        Change within noise threshold.
-Found 1 outliers among 100 measurements (1.00%)
-  1 (1.00%) high mild
+Benchmarking search: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 11.7s or reduce sample count to 40.
+search                  time:   [2.3144 ms 2.3440 ms 2.3760 ms]
+                        change: [-3.7824% -1.2338% +1.6347%] (p = 0.36 > 0.05)
+                        No change in performance detected.
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
 
 ```
 
-
-Served over [Actix Web](https://actix.rs/):
+Served via [Actix Web](https://actix.rs/):
 
 ```
 > cargo run --release --bin rrgeo-actix
-> wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
-Running 10s test @ http://localhost:3000/?lat=40&long=-73
-  2 threads and 10 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     2.47ms    0.87ms  13.01ms   74.17%
-    Req/Sec     2.02k    39.42     2.07k    79.50%
-  Latency Distribution
-     50%    1.96ms
-     75%    3.86ms
-     90%    3.93ms
-     99%    4.06ms
-  40170 requests in 10.00s, 8.58MB read
-Requests/sec:   4015.31
-Transfer/sec:      0.86MB
+> oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
+Summary:
+  Success rate: 1.0000
+  Total:        5.0166 secs
+  Slowest:      0.0531 secs
+  Fastest:      0.0023 secs
+  Average:      0.0166 secs
+  Requests/sec: 2985.8853
 
+  Total data:   1.47 MiB
+  Size/request: 103.00 B
+  Size/sec:     300.34 KiB
 
+Response time histogram:
+  0.004 [606]  |■■■■
+  0.009 [2031] |■■■■■■■■■■■■■■■
+  0.013 [4248] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.017 [3815] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.022 [2415] |■■■■■■■■■■■■■■■■■■
+  0.026 [1097] |■■■■■■■■
+  0.030 [542]  |■■■■
+  0.035 [130]  |
+  0.039 [55]   |
+  0.043 [34]   |
+  0.048 [6]    |
+
+Latency distribution:
+  10% in 0.0092 secs
+  25% in 0.0124 secs
+  50% in 0.0158 secs
+  75% in 0.0206 secs
+  90% in 0.0252 secs
+  95% in 0.0284 secs
+  99% in 0.0347 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:   0.0043 secs, 0.0008 secs, 0.0099 secs
+  DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0001 secs
+
+Status code distribution:
+  [200] 14979 responses
 ```
 
-Served over [Iron](http://ironframework.io/):
+Served via Warp:
 
 ```
-> cargo run --release --bin rrgeo-iron
-> wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
-Running 10s test @ http://localhost:3000/?lat=40&long=-73
-  2 threads and 10 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     2.55ms    1.15ms  25.73ms   76.03%
-    Req/Sec     1.99k   110.23     2.20k    82.50%
-  Latency Distribution
-     50%    1.96ms
-     75%    3.35ms
-     90%    3.92ms
-     99%    5.95ms
-  39563 requests in 10.01s, 8.23MB read
-Requests/sec:   3954.05
-Transfer/sec:    841.78KB
+> cargo run --release --bin rrgeo-warp
+Summary:
+Summary:
+  Success rate: 1.0000
+  Total:        5.0006 secs
+  Slowest:      0.2553 secs
+  Fastest:      0.0113 secs
+  Average:      0.1263 secs
+  Requests/sec: 388.9503
 
+  Total data:   275.42 KiB
+  Size/request: 145.00 B
+  Size/sec:     55.08 KiB
+
+Response time histogram:
+  0.022 [9]    |
+  0.044 [10]   |
+  0.067 [8]    |
+  0.089 [9]    |
+  0.111 [78]   |■
+  0.133 [1793] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.155 [0]    |
+  0.177 [0]    |
+  0.200 [0]    |
+  0.222 [0]    |
+  0.244 [38]   |
+
+Latency distribution:
+  10% in 0.1229 secs
+  25% in 0.1239 secs
+  50% in 0.1250 secs
+  75% in 0.1266 secs
+  90% in 0.1277 secs
+  95% in 0.1285 secs
+  99% in 0.2504 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:   0.0045 secs, 0.0009 secs, 0.0097 secs
+  DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0001 secs
+
+Status code distribution:
+  [200] 1945 responses
 ```
 
 

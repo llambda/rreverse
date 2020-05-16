@@ -47,8 +47,8 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Rever
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
-    std::env::set_var("RUST_LOG", "actix_web=info");
-    env_logger::init();
+    // std::env::set_var("RUST_LOG", "actix_web=info");
+    // env_logger::init();
 
     HttpServer::new(|| {
         App::new()

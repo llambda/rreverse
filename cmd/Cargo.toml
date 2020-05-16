@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 reverse_geocoder = { path = "../reverse-geocoder" }
-time = "^0.2.13"
+time = "^0.2.16"
 
 [[bin]]
 name = "rrgeo-cmd"
