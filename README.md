@@ -6,7 +6,6 @@ A fast reverse geocoder in Rust. Inspired by Python [reverse-geocoder](https://g
 - [Crate](https://crates.io/crates/reverse_geocoder)
 - [2.0.0 Docs](https://docs.rs/reverse_geocoder/2.0.0/reverse_geocoder/index.html)
 - [1.0.1 Docs](https://docs.rs/reverse_geocoder/1.0.1/reverse_geocoder/)
-- Build status: [![Build Status](https://travis-ci.org/llambda/rrgeo.svg?branch=master)](https://travis-ci.org/llambda/rrgeo)
 
 ## Description 
  
@@ -217,7 +216,7 @@ Loading formatted geocoded file...
 python mode2.py  2.82s user 0.34s system 142% cpu 2.221 total
 ```
 
-### [nreverse](https://github.com/llambda/nreverse) (Node.js version)
+### [nreverse](https://github.com/ggcode1/nreverse) (Node.js version)
 
 ```
 load modules: 12.619ms
